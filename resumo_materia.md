@@ -290,3 +290,21 @@ conf t
 router ospf 1
   area x nssa
 ```
+
+| Tipo de Área          | Aceita rotas IA (inter-area) | Aceita rotas externas (E1/E2) | Redistribui rotas externas | Usa rota default      | Permite virtual-links | Comando (ABR)              |
+| ---------------------- | ---------------------------- | ----------------------------- | -------------------------- | --------------------- | --------------------- | -------------------------- |
+| **Normal**       | ✅ Sim                       | ✅ Sim                        | ✅ Sim                     | ❌ Não (por padrão) | ✅ Sim                | Nenhum especial            |
+| **Stub**         | ✅ Sim                       | ❌ Não                       | ❌ Não                    | ✅ Sim                | ❌ Não               | `area x stub`            |
+| **Totally Stub** | ❌ Não                      | ❌ Não                       | ❌ Não                    | ✅ Sim                | ❌ Não               | `area x stub no-summary` |
+| **NSSA**         | ✅ Sim                       | ❌ Não (E1/E2)               | ✅ Sim (como N1/N2)        | ✅ Sim                | ❌ Não               | `area x nssa`            |
+| **Totally NSSA** | ❌ Não                      | ❌ Não (E1/E2)               | ✅ Sim (como N1/N2)        | ✅ Sim                | ❌ Não               | `area x nssa no-summary` |
+
+# Autenticação dos protocolos
+
+## RIP
+
+
+## EIGRP
+
+
+## OSPF
