@@ -1,4 +1,3 @@
-
 # Estudo para Encaminhamento de Dados
 
 # Distância Administrativa
@@ -121,7 +120,7 @@ Um _router_ só é FS se RD < FD.
 
 ## "Default-information originate"
 
-No EIGRP não existe o comando *default-information originate*. 
+No EIGRP não existe o comando *default-information originate*.
 
 ```
 ip route 0.0.0.0 0.0.0.0 <next-hop>
@@ -247,6 +246,20 @@ Router com a saída secundária:
 ip route 0.0.0.0 0.0.0.0 <ip_gateway_isp>
 router ospf 1
   default-information originate metric 100
+```
+
+## *Redistribute RIP*
+
+```
+router ospf 1
+  redistribute rip subnets
+```
+
+## *Redistribute EIGRP*
+
+```
+router ospf 1
+  redistribute eigrp 100 subnets
 ```
 
 ## Exemplo comando _show ip ospf neighbor_
