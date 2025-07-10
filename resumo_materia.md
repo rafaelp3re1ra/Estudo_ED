@@ -251,6 +251,8 @@ router ospf 1
 
 ## Exemplo comando _show ip ospf neighbor_
 
+Para redes *multicast:*
+
 ```
 R1# show ip ospf neighbor
 
@@ -259,6 +261,19 @@ Neighbor ID     Pri   State           Dead Time   Address         Interface
 10.0.0.3        1     FULL/BDR        00:00:37     192.168.1.3     FastEthernet0/0
 10.0.0.4        1     FULL/DROTHER    00:00:38     192.168.1.4     FastEthernet0/0
 ```
+
+Ponto-a-ponto:
+
+```
+R1# show ip ospf neighbor
+
+Neighbor ID     Pri   State   Dead Time   Address         Interface
+10.0.0.2        1     FULL    00:00:39     192.168.1.2     FastEthernet0/0
+10.0.0.3        1     FULL    00:00:37     192.168.1.3     FastEthernet0/0
+10.0.0.4        1     FULL    00:00:38     192.168.1.4     FastEthernet0/0
+```
+
+As diferenças é como o estado é apresentado. Em redes ponto-a-ponto (serial, entre os *routers*) o papel do router não é mostrado. ABR ou ASBR também não é apresentado neste comando.
 
 ## *Virtual-links*
 
