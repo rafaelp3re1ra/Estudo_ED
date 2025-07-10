@@ -94,7 +94,7 @@ Utiliza-se também em todos os routers que estejam ligados a PC's.
 
 Na tabela de roteamento aparece "D" porque o EIGRP pode ser chamado de \*dual.
 
-###### **Nota:** No EIGRP o _passive-interface_ e _default-information originate_ funcionam igual
+###### **Nota:** No EIGRP o _passive-interface_ funciona igual
 
 ## Configuração do EIGRP
 
@@ -118,6 +118,56 @@ Muito resumidamente, numa rede com EIGRP um router escolhe o vizinho para quem v
 Para evitar potenciais loops, um FS tem de apresentar uma RD inferior à FD.
 
 Um _router_ só é FS se RD < FD.
+
+## "Default-information originate"
+
+No EIGRP não existe o comando *default-information originate*. 
+
+```
+ip route 0.0.0.0 0.0.0.0 <next-hop>
+router eigrp 100
+  redistribute static
+```
+
+Para definir prioridade/custo:
+
+```
+redistribute static metric <bandwidth> <delay> <reliability> <load> <MTU>
+```
+
+### 1. `bandwidth` (em Kbps)
+
+* É a **largura de banda mínima** no caminho.
+* Quanto maior,  **melhor** .
+* Exemplo:
+  * Um link de 100 Mbps = `100000`
+  * Um link de 1 Gbps = `1000000`
+
+### 2. `delay` (em microssegundos / 10)
+
+* É a **soma dos delays dos links** no caminho.
+* Quanto  **menor** , melhor.
+* Exemplo:
+  * Um delay de 100 microsegundos = `100` (porque o EIGRP usa microssegundos/10)
+
+### 3. `reliability` (de 1 a 255)
+
+* Representa a **confiabilidade** do link.
+* 255 = totalmente confiável (sem perda)
+* 1 = link ruim
+* **255 é o mais comum** em redistribuições.
+
+### 4. `load` (de 1 a 255)
+
+* É o **nível de uso atual** do link.
+* 1 = link ocioso (melhor)
+* 255 = link saturado (pior)
+* Valor típico para rotas estáticas: `1`
+
+### 5. `MTU` (tamanho da unidade máxima de transmissão)
+
+* Não é usado diretamente no cálculo da métrica, mas é necessário no comando.
+* Exemplo comum: `1500` (Ethernet)
 
 ## _Redistribute_ RIP
 
@@ -145,7 +195,7 @@ router eigrp 100
 
 # OSPF
 
-###### **Nota:** No OSPF o _passive-interface_ e *default-information* originate funcionam da mesma maneira que os anteriores
+###### **Nota:** No OSPF o _passive-interface_ funciona igual.
 
 ### Tipos de _routers_ no OSPF
 
@@ -179,6 +229,24 @@ conf t
 router ospf 1
   router-id 9.9.9.x #x é, normalmente, o número do router em questão
   network <rede> <wildcard> area x
+```
+
+## *Default-information originate*
+
+Router com a saída primária:
+
+```
+ip route 0.0.0.0 0.0.0.0 <ip_gateway_isp>
+router ospf 1
+  default-information originate
+```
+
+Router com a saída secundária:
+
+```
+ip route 0.0.0.0 0.0.0.0 <ip_gateway_isp>
+router ospf 1
+  default-information originate metric 100
 ```
 
 ## Exemplo comando _show ip ospf neighbor_
@@ -272,7 +340,7 @@ router ospf 1
   area x nssa
 ```
 
-## *Totally NSSA*
+### *Totally NSSA*
 
 Igual à NSSA, mas não recebe rotas **inter-area (IA)**. Apenas recebe **rota default** e permite redistribuir rotas externas como N1/N2.
 
