@@ -309,6 +309,8 @@ Este comando deve ser utilizado nos 2 *routers* a ligar. O "x1" é a área que a
 
 Ordem de escolha das rotas para os routers:
 
+(isto está mal provavelmente)
+
 1. O
 2. O IA
 3. N1
