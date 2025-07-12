@@ -1,3 +1,5 @@
+    
+
 # Estudo para Encaminhamento de Dados
 
 # Distância Administrativa
@@ -120,7 +122,7 @@ Um _router_ só é FS se RD < FD.
 
 ## "Default-information originate"
 
-No EIGRP não existe o comando *default-information originate*.
+No EIGRP não existe o comando _default-information originate_.
 
 ```
 ip route 0.0.0.0 0.0.0.0 <next-hop>
@@ -136,37 +138,37 @@ redistribute static metric <bandwidth> <delay> <reliability> <load> <MTU>
 
 ### 1. `bandwidth` (em Kbps)
 
-* É a **largura de banda mínima** no caminho.
-* Quanto maior,  **melhor** .
-* Exemplo:
-  * Um link de 100 Mbps = `100000`
-  * Um link de 1 Gbps = `1000000`
+- É a **largura de banda mínima** no caminho.
+- Quanto maior, **melhor** .
+- Exemplo:
+  - Um link de 100 Mbps = `100000`
+  - Um link de 1 Gbps = `1000000`
 
 ### 2. `delay` (em microssegundos / 10)
 
-* É a **soma dos delays dos links** no caminho.
-* Quanto  **menor** , melhor.
-* Exemplo:
-  * Um delay de 100 microsegundos = `100` (porque o EIGRP usa microssegundos/10)
+- É a **soma dos delays dos links** no caminho.
+- Quanto **menor** , melhor.
+- Exemplo:
+  - Um delay de 100 microsegundos = `100` (porque o EIGRP usa microssegundos/10)
 
 ### 3. `reliability` (de 1 a 255)
 
-* Representa a **confiabilidade** do link.
-* 255 = totalmente confiável (sem perda)
-* 1 = link ruim
-* **255 é o mais comum** em redistribuições.
+- Representa a **confiabilidade** do link.
+- 255 = totalmente confiável (sem perda)
+- 1 = link ruim
+- **255 é o mais comum** em redistribuições.
 
 ### 4. `load` (de 1 a 255)
 
-* É o **nível de uso atual** do link.
-* 1 = link ocioso (melhor)
-* 255 = link saturado (pior)
-* Valor típico para rotas estáticas: `1`
+- É o **nível de uso atual** do link.
+- 1 = link ocioso (melhor)
+- 255 = link saturado (pior)
+- Valor típico para rotas estáticas: `1`
 
 ### 5. `MTU` (tamanho da unidade máxima de transmissão)
 
-* Não é usado diretamente no cálculo da métrica, mas é necessário no comando.
-* Exemplo comum: `1500` (Ethernet)
+- Não é usado diretamente no cálculo da métrica, mas é necessário no comando.
+- Exemplo comum: `1500` (Ethernet)
 
 ## _Redistribute_ RIP
 
@@ -203,8 +205,8 @@ router eigrp 100
 - **DROther -** _Outro_ - Este tipo é os _routers_ que não são DR, BDR, ABR nem ASBR. São os _routers_ que estão dentro da área.
 - **ABR -** _Area Border Router_ - _Router_ que fica na fronteira entre a área 0 e outra área OSPF. Pelo menos 1 porta tem de pertencer à área 0.
 - **ASBR -** _Autonomous System Boundary Router_ - É o _router_ que fica na fronteira e faz a redistribuição de outros protocolos de encaminhamento para o OSPF.
-- **BR -**  *Backbone router* - Tem todas as interfaces dentro da área 0.
-- **IR -**  *Internal router* - Tem todas as interfaces dentro de uma área qualquer que não a área 0.
+- **BR -** _Backbone router_ - Tem todas as interfaces dentro da área 0.
+- **IR -** _Internal router_ - Tem todas as interfaces dentro de uma área qualquer que não a área 0.
 
 ### Critérios de seleção do DR e BDR
 
@@ -230,7 +232,7 @@ router ospf 1
   network <rede> <wildcard> area x
 ```
 
-## *Default-information originate*
+## _Default-information originate_
 
 Router com a saída primária:
 
@@ -248,14 +250,14 @@ router ospf 1
   default-information originate metric 100
 ```
 
-## *Redistribute RIP*
+## _Redistribute RIP_
 
 ```
 router ospf 1
   redistribute rip subnets
 ```
 
-## *Redistribute EIGRP*
+## _Redistribute EIGRP_
 
 ```
 router ospf 1
@@ -264,7 +266,7 @@ router ospf 1
 
 ## Exemplo comando _show ip ospf neighbor_
 
-Para redes *multicast:*
+Para redes _multicast:_
 
 ```
 R1# show ip ospf neighbor
@@ -286,9 +288,9 @@ Neighbor ID     Pri   State   Dead Time   Address         Interface
 10.0.0.4        1     FULL    00:00:38     192.168.1.4     FastEthernet0/0
 ```
 
-As diferenças é como o estado é apresentado. Em redes ponto-a-ponto (serial, entre os *routers*) o papel do router não é mostrado. ABR ou ASBR também não é apresentado neste comando.
+As diferenças é como o estado é apresentado. Em redes ponto-a-ponto (serial, entre os _routers_) o papel do router não é mostrado. ABR ou ASBR também não é apresentado neste comando.
 
-## *Virtual-links*
+## _Virtual-links_
 
 ```
 conf t
@@ -296,16 +298,16 @@ router ospf 1
   area x1 virtual-link 9.9.9.x2
 ```
 
-Este comando deve ser utilizado nos 2 *routers* a ligar. O "x1" é a área que ambos têm em comum. O "x2" é o id do *router*.
+Este comando deve ser utilizado nos 2 _routers_ a ligar. O "x1" é a área que ambos têm em comum. O "x2" é o id do _router_.
 
 ## Rotas OSPF
 
-* **O E1 -** Rota externa redistribuída para o OSPF. Rotas externas do tipo 1 (E1) somam-se as distâncias do interior com as do exterior. LSA tipo 5 (*AS External*)
-* **O E2 -** Rotas externas do tipo 2 (E2) só conta do exterior. - LSA tipo 5 (*AS External*)
-* **O IA** **-** *Inter Area* - Rotas de outras áreas OSPF. - LSA tipo 1 (*router*) e 2 (*network*) - Ex.: 2 *routers* na área 0 a trocarem rotas entre si.
-* **O -** *Intra Area* - Rotas da mesma área. - LSA tipo 3 (*summary*) e 4 (*ASBR summary*) - Ex.: Uma rota da área 0 recebida na área 1.
-* ****O N1/N2** **–**** NSSA Externas: rotas redistribuídas dentro de uma área NSSA. Rota externa vinda de uma NSSA - LSA tipo 7 (convertido para tipo 5 pelo ABR se necessário)
-* N1 e N2 têm as mesmas métricas que E1 e E2, respetivamente.
+- **O E1 -** Rota externa redistribuída para o OSPF. Rotas externas do tipo 1 (E1) somam-se as distâncias do interior com as do exterior. LSA tipo 5 (_AS External_)
+- **O E2 -** Rotas externas do tipo 2 (E2) só conta do exterior. - LSA tipo 5 (_AS External_)
+- **O IA** **-** _Inter Area_ - Rotas de outras áreas OSPF. - LSA tipo 1 (_router_) e 2 (_network_) - Ex.: 2 _routers_ na área 0 a trocarem rotas entre si.
+- **O -** _Intra Area_ - Rotas da mesma área. - LSA tipo 3 (_summary_) e 4 (_ASBR summary_) - Ex.: Uma rota da área 0 recebida na área 1.
+- \***\*O N1/N2** **–\*\*** NSSA Externas: rotas redistribuídas dentro de uma área NSSA. Rota externa vinda de uma NSSA - LSA tipo 7 (convertido para tipo 5 pelo ABR se necessário)
+- N1 e N2 têm as mesmas métricas que E1 e E2, respetivamente.
 
 Ordem de escolha das rotas para os routers:
 
@@ -320,11 +322,11 @@ Ordem de escolha das rotas para os routers:
 
 ## Tipos de área OSPF
 
-### Área *Stub*
+### Área _Stub_
 
 Aceita rotas **O IA**, mas não propaga rotas externas.
 
-Os *routers* (todos) dentro de uma área *stub* precisam de
+Os _routers_ (todos) dentro de uma área _stub_ precisam de
 
 ```
 conf t
@@ -332,15 +334,15 @@ router ospf 1
   area x stub
 ```
 
-para definir a área como *stub*.
+para definir a área como _stub_.
 
-Estas áreas não podem servir *virtual-links.* A área em questão e os seus *routers* não podem ter *virtual-links* a passar por ela ou configurados nos *routers* desta. Não pode ser uma área de trânsito de *virtual-links*.
+Estas áreas não podem servir _virtual-links._ A área em questão e os seus _routers_ não podem ter _virtual-links_ a passar por ela ou configurados nos _routers_ desta. Não pode ser uma área de trânsito de _virtual-links_.
 
-### Área *totally stub*
+### Área _totally stub_
 
 Aqui não há rotas **IA**. Não são propagadas rotas externas.
 
-*No ABR:*
+_No ABR:_
 
 ```
 conf t
@@ -348,7 +350,7 @@ router ospf 1
   area x stub no-summary
 ```
 
-*Nos restantes routers da área:*
+_Nos restantes routers da área:_
 
 ```
 conf t
@@ -356,13 +358,13 @@ router ospf 1
   area x stub
 ```
 
-### *Not So Stuby Area -> NSSA*
+### _Not So Stuby Area -> NSSA_
 
 É uma área fechada, mas permite na mesma algum tipo de saída para o exterior.
 
-Aceita rotas ***inter-area* (IA)**. São propagadas rotas como N1/N2.
+Aceita rotas **_inter-area_ (IA)**. São propagadas rotas como N1/N2.
 
-*Em todos os routers da área:*
+_Em todos os routers da área:_
 
 ```
 conf t
@@ -370,11 +372,11 @@ router ospf 1
   area x nssa
 ```
 
-### *Totally NSSA*
+### _Totally NSSA_
 
 Igual à NSSA, mas não recebe rotas **inter-area (IA)**. Apenas recebe **rota default** e permite redistribuir rotas externas como N1/N2.
 
-*No ABR:*
+_No ABR:_
 
 ```
 conf t
@@ -382,7 +384,7 @@ router ospf 1
 area 1 nssa no-summary
 ```
 
-*Nos restantes routers da área:*
+_Nos restantes routers da área:_
 
 ```
 conf t
@@ -455,6 +457,8 @@ router ospf 1
 
 # ACLs, Prefix-Lists e PBR
 
+###### Nota: Prefix-list ou ACL's "são" a mesma coisa. Não são o mesmo, mas no fim têm a mesma função.
+
 ## Access Control Lists (ACLs)
 
 ACLs servem para **filtrar tráfego IP** com base em critérios como IP de origem/destino, protocolos, portas, etc.
@@ -514,7 +518,13 @@ ip prefix-list BLOQUEIO permit 0.0.0.0/0 le 32
 - Bloqueia qualquer rota da rede `10.0.0.0/8`
 - Permite todas as outras rotas, independentemente da máscara
 
----
+```
+ip prefix-list BLOQUEAR_ROUTER_R6 seq 5 deny <prefixo>
+ip prefix-list BLOQUEAR_ROUTER_R6 seq 10 permit 0.0.0.0/0 le 32
+
+router rip
+  distribute-list prefix BLOQUEAR_ROUTER_R6 in <interface>
+```
 
 ### Exemplo com `ge` e `le`
 
@@ -526,6 +536,29 @@ ip prefix-list EXEMPLO permit 192.168.0.0/16 ge 24 le 28
   - **Prefixo dentro de 192.168.0.0/16**
   - **Máscara entre /24 e /28** (inclusive) (ge - greater than or equal | le - less than or equal)
 - Bloqueia /16, /17, etc.
+
+Através de uma prefix-list.
+
+```
+ip prefix-list NOR6 seq 5 deny 20.20.20.201/30
+route-map BLOCKR6 deny 10
+  match ip address prefix-list NOR6
+
+route-map NOR6 permit 20
+
+router ospf 1
+  distribute-list route-map NOR6 in
+```
+
+Atraveś da access-list:
+
+```
+access-list 10 deny 20.20.20.20.201 0.0.0.3
+access-list 10 permit any
+router ospf 1
+  distribute-list 10 in
+```
+
 
 ---
 
@@ -577,3 +610,5 @@ Ou seja, quando se altera a bandwidth de uma porta, muda o custo, tornando-a pre
 | RIP       | `router rip`         | `default-information originate` | `redistribute eigrp/ospf` |
 | EIGRP     | `router eigrp 100`   | idem                              | `redistribute rip/ospf`   |
 | OSPF      | `router ospf 1`      | idem                              | `redistribute rip/eigrp`  |
+
+# IPv6
