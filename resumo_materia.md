@@ -182,13 +182,13 @@ router eigrp 100
   redistribute ospf <processo OSPF> metric <bandwidth> <delay> <reliability> <load> <MTU>
 ```
 
-| Campo       | Valor típico | Significado                              |
-| ----------- | ------------ | ---------------------------------------- |
-| Bandwidth   | 10000        | largura de banda em kbps (ex: 10 Mbps)   |
-| Delay       | 100          | atraso em decenas de microssegundos      |
-| Reliability | 255          | confiabilidade (255 = 100%)              |
-| Load        | 1            | carga (1 = baixa)                        |
-| MTU         | 1500         | tamanho máximo de unidade de transmissão |
+| Campo       | Valor típico | Significado                                |
+| ----------- | ------------- | ------------------------------------------ |
+| Bandwidth   | 10000         | largura de banda em kbps (ex: 10 Mbps)     |
+| Delay       | 100           | atraso em decenas de microssegundos        |
+| Reliability | 255           | confiabilidade (255 = 100%)                |
+| Load        | 1             | carga (1 = baixa)                          |
+| MTU         | 1500          | tamanho máximo de unidade de transmissão |
 
 ---
 
@@ -390,13 +390,13 @@ router ospf 1
   area x nssa
 ```
 
-| Tipo de Área     | Aceita rotas IA (inter-area) | Aceita rotas externas (E1/E2) | Redistribui rotas externas | Usa rota default    | Permite virtual-links | Comando (ABR)            |
-| ---------------- | ---------------------------- | ----------------------------- | -------------------------- | ------------------- | --------------------- | ------------------------ |
-| **Normal**       | ✅ Sim                       | ✅ Sim                        | ✅ Sim                     | ❌ Não (por padrão) | ✅ Sim                | Nenhum especial          |
-| **Stub**         | ✅ Sim                       | ❌ Não                        | ❌ Não                     | ✅ Sim              | ❌ Não                | `area x stub`            |
-| **Totally Stub** | ❌ Não                       | ❌ Não                        | ❌ Não                     | ✅ Sim              | ❌ Não                | `area x stub no-summary` |
-| **NSSA**         | ✅ Sim                       | ❌ Não (E1/E2)                | ✅ Sim (como N1/N2)        | ✅ Sim              | ❌ Não                | `area x nssa`            |
-| **Totally NSSA** | ❌ Não                       | ❌ Não (E1/E2)                | ✅ Sim (como N1/N2)        | ✅ Sim              | ❌ Não                | `area x nssa no-summary` |
+| Tipo de Área          | Aceita rotas IA (inter-area) | Aceita rotas externas (E1/E2) | Redistribui rotas externas | Usa rota default      | Permite virtual-links | Comando (ABR)              |
+| ---------------------- | ---------------------------- | ----------------------------- | -------------------------- | --------------------- | --------------------- | -------------------------- |
+| **Normal**       | ✅ Sim                       | ✅ Sim                        | ✅ Sim                     | ❌ Não (por padrão) | ✅ Sim                | Nenhum especial            |
+| **Stub**         | ✅ Sim                       | ❌ Não                       | ❌ Não                    | ✅ Sim                | ❌ Não               | `area x stub`            |
+| **Totally Stub** | ❌ Não                      | ❌ Não                       | ❌ Não                    | ✅ Sim                | ❌ Não               | `area x stub no-summary` |
+| **NSSA**         | ✅ Sim                       | ❌ Não (E1/E2)               | ✅ Sim (como N1/N2)        | ✅ Sim                | ❌ Não               | `area x nssa`            |
+| **Totally NSSA** | ❌ Não                      | ❌ Não (E1/E2)               | ✅ Sim (como N1/N2)        | ✅ Sim                | ❌ Não               | `area x nssa no-summary` |
 
 ---
 
@@ -463,8 +463,8 @@ ACLs servem para **filtrar tráfego IP** com base em critérios como IP de orige
 
 ### Tipos de ACL
 
-| Tipo     | Nº de Identificação  | Filtros por...                            |
-| -------- | -------------------- | ----------------------------------------- |
+| Tipo     | Nº de Identificação | Filtros por...                            |
+| -------- | ---------------------- | ----------------------------------------- |
 | Standard | 1–99 ou 1300–1999    | IP de origem apenas                       |
 | Extended | 100–199 ou 2000–2699 | IP de origem, destino, portas, protocolos |
 
@@ -581,7 +581,7 @@ route-map PBR-EXEMPLO permit 10
  set ip next-hop 10.1.1.1 #IP do router
 
 interface FastEthernet0/0
- ip policy route-map PBR-EXEMPLO #interface por onde sai o tráfego
+ ip policy route-map PBR-EXEMPLO #interface por onde entra o tráfego
 ```
 
 **Explicação:**
@@ -592,20 +592,20 @@ interface FastEthernet0/0
 
 # Comparação de métricas por protocolo
 
-| Protocolo | Tipo de Métrica                          | Detalhes                                                                               |
-| --------- | ---------------------------------------- | -------------------------------------------------------------------------------------- |
-| **RIP**   | **Número de saltos (hops)**              | Cada router conta como 1 salto. Limite máximo:**15** . Simples, mas impreciso.         |
-| **EIGRP** | **Métrica composta** (Bandwidth + Delay) | Pode incluir opcionalmente:**reliability**, **load** e **MTU** .                       |
-| **OSPF**  | **Custo baseado na Bandwidth**           | Custo =**100 Mbps / Bandwidth da interface (em Mbps)** (pode ser ajustado manualmente) |
+| Protocolo       | Tipo de Métrica                                | Detalhes                                                                                     |
+| --------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| **RIP**   | **Número de saltos (hops)**              | Cada router conta como 1 salto. Limite máximo:**15** . Simples, mas impreciso.        |
+| **EIGRP** | **Métrica composta** (Bandwidth + Delay) | Pode incluir opcionalmente:**reliability**, **load** e **MTU** .          |
+| **OSPF**  | **Custo baseado na Bandwidth**            | Custo =**100 Mbps / Bandwidth da interface (em Mbps)** (pode ser ajustado manualmente) |
 
 Ou seja, quando se altera a bandwidth de uma porta, muda o custo, tornando-a preferível, ou não.
 
 # Resumo de comandos
 
-| Protocolo | Configuração Básica | Rota Default                    | Redistribuição            |
-| --------- | ------------------- | ------------------------------- | ------------------------- |
-| RIP       | `router rip`        | `default-information originate` | `redistribute eigrp/ospf` |
-| EIGRP     | `router eigrp 100`  | idem                            | `redistribute rip/ospf`   |
-| OSPF      | `router ospf 1`     | idem                            | `redistribute rip/eigrp`  |
+| Protocolo | Configuração Básica | Rota Default                      | Redistribuição            |
+| --------- | ---------------------- | --------------------------------- | --------------------------- |
+| RIP       | `router rip`         | `default-information originate` | `redistribute eigrp/ospf` |
+| EIGRP     | `router eigrp 100`   | idem                              | `redistribute rip/ospf`   |
+| OSPF      | `router ospf 1`      | idem                              | `redistribute rip/eigrp`  |
 
 # IPv6
