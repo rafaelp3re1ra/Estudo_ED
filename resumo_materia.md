@@ -219,7 +219,7 @@ Quando as prioridades são idênticas:
 1. É eleito para DR o _router_ com o ID mais elevado.
 2. É eleito para BDR o _router_ com o segundo ID mais elevado.
 3. Quando os _routers_ não têm esse ID, é usado o maior IP das várias interfaces _loopback_ configuradas.
-4. Quando não existe qualquer interface _loopback_ configurada, é
+4. Quando não existe qualquer interface _loopback_ configurada, é das interfaces de rede.
 
 ## Configuração do OSPF
 
